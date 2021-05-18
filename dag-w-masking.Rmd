@@ -1,0 +1,28 @@
+```{r}
+delta <- 1
+gamma <- 1
+beta  <- -2 # Causes masking and possibly "flipped" association
+
+N <- 100000
+
+X0 <- rnorm(N)
+X1 <- beta*X0 + rnorm(N)
+X2 <- delta*X0 + gamma*X1 + rnorm(N)
+```
+
+```{r}
+confint(lm(X2 ~ X0))[2, ]
+beta*gamma + delta
+
+confint(lm(X2 ~ X0 + X1))[2, ]
+delta
+```
+
+```{r}
+confint(lm(X2 ~ X1))[2, ]
+(beta*delta + (beta^2 + 1)*gamma)/(beta^2 + 1)
+
+confint(lm(X2 ~ X1 + X0))[2, ]
+gamma
+```
+

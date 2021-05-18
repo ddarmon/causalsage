@@ -1,5 +1,12 @@
 from sage.all import *
 
+def Sigma_from_W(W):
+	P = (identity_matrix(len(W.columns())) - W).inverse()
+
+	Sigma = P*P.T
+
+	return Sigma
+
 def extract_submatrix(indices0, indices1, Afull):
 	A = matrix(SR, len(indices0), len(indices1))
 	
