@@ -17,21 +17,17 @@ def extract_submatrix(indices0, indices1, Afull):
 	return A
 
 def partial_covariance_matrix(targets, condset, Sigma):
-	SigmaX = extract_submatrix(targets, targets, Sigma)
+	SigmaX  = extract_submatrix(targets, targets, Sigma)
 	SigmaXZ = extract_submatrix(targets, condset, Sigma)
-	SigmaZ = extract_submatrix(condset, condset, Sigma)
+	SigmaZ  = extract_submatrix(condset, condset, Sigma)
 	
-	SigmaXgZ = SigmaX  - SigmaXZ*(SigmaZ.inverse())*SigmaXZ.T
+	SigmaXgZ = SigmaX - SigmaXZ*(SigmaZ.inverse())*SigmaXZ.T
 	
 	return SigmaXgZ
 
 def partial_regression_coefficient(response, predictor, condset, Sigma):
 	targets = [response, predictor]
-
-	SigmaX = extract_submatrix(targets, targets, Sigma)
-	SigmaXZ = extract_submatrix(targets, condset, Sigma)
-	SigmaZ = extract_submatrix(condset, condset, Sigma)
 	
-	SigmaXgZ = SigmaX  - SigmaXZ*(SigmaZ.inverse())*SigmaXZ.T
+	SigmaXgZ = partial_covariance_matrix(targets, condset, Sigma)
 	
 	return SigmaXgZ[0, 1]/SigmaXgZ[1, 1]
